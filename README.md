@@ -2,7 +2,7 @@
 
 ![workflow](https://github.com/github/docs/actions/workflows/test.yml/badge.svg)
 
-A typescript template for github.
+A typescript async sleep utility.
 
 ## Example
 
