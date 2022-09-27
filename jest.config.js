@@ -137,7 +137,7 @@ module.exports = {
 	// setupFilesAfterEnv: [],
 
 	// The number of seconds after which a test is considered as slow and reported as such in the results.
-	// slowTestThreshold: 5,
+	slowTestThreshold: 45,
 
 	// A list of paths to snapshot serializer modules Jest should use for snapshot testing
 	// snapshotSerializers: [],
@@ -152,12 +152,10 @@ module.exports = {
 	// testLocationInResults: false,
 
 	// The glob patterns Jest uses to detect test files
-	testMatch: ["**/*.test.js"]
+	testMatch: ["**/*.test.js"],
 
 	// An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-	// testPathIgnorePatterns: [
-	//   "/node_modules/"
-	// ],
+	testPathIgnorePatterns: ["/node_modules/", "/dist/"]
 
 	// The regexp pattern or array of patterns that Jest uses to detect test files
 	// testRegex: [],
