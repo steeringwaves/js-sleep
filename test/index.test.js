@@ -3,11 +3,11 @@
 
 /* eslint-enable no-unused-vars */
 
-const Dummy = require("../index").default;
+// const Dummy = require("../index").default;
 
-describe("Dummy", () => {
-	it("Get", () => {
-		const d = new Dummy("hello world");
-		expect(d.Message).toEqual("hello world");
-	});
-});
+// describe("Dummy", () => {
+// 	it("Get", () => {
+// 		const d = new Dummy("hello world");
+// 		expect(d.Message).toEqual("hello world");
+// 	});
+// });

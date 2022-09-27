@@ -1,14 +1,14 @@
 {
-	"name": "@steeringwaves/ts-github-template",
+	"name": "@steeringwaves/sleep",
 	"version": "0.0.1",
 	"description": "typescript github template",
 	"author": "steeringwaves",
 	"license": "ISC",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/steeringwaves/ts-github-template"
+		"url": "https://github.com/steeringwaves/js-sleep"
 	},
-	"homepage": "https://github.com/steeringwaves/ts-github-template",
+	"homepage": "https://github.com/steeringwaves/js-sleep",
 	"keywords": [],
 	"engines": {
 		"node": ">=12"
