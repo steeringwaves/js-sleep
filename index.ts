@@ -1,11 +1,16 @@
-export default class Dummy {
-	private _msg: string = "";
+import PinkyPromise, { PinkyPromiseOptions, Cancelable, Canceled } from "@steeringwaves/pinkypromise";
 
-	constructor(msg: string) {
-		this._msg = msg;
-	}
-
-	get Message(): string {
-		return this._msg;
-	}
+export default function Sleep(ms: number): Cancelable<void> {
+	let timer: any;
+	return PinkyPromise(
+		(resolve: () => any) => {
+			timer = setTimeout(resolve, ms);
+		},
+		<PinkyPromiseOptions>{
+			OnCancel: (canceled: Canceled) => {
+				clearTimeout(timer);
+				throw canceled;
+			}
+		}
+	);
 }
