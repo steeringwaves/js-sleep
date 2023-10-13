@@ -109,31 +109,19 @@ describe("Sleep fake time tests", () => {
 		expect(callback).not.toBeCalled();
 
 		await expect(
-			new PinkyPromise(async (resolve, reject) => {
+			new PinkyPromise(async () => {
 				callback(); // should be called
-				try {
-					await Sleep(500).setContext(ctx);
-				} catch (error) {
-					reject(error);
-					return;
-				}
+				await Sleep(500).setContext(ctx);
 				callback(); // should be called
-				resolve();
 			})
 		).resolves.not.toThrow();
 		expect(callback).toHaveBeenCalledTimes(2);
 
 		await expect(
-			new PinkyPromise(async (resolve, reject) => {
+			new PinkyPromise(async () => {
 				callback(); // should be called
-				try {
-					await Sleep(2000).setContext(ctx);
-				} catch (error) {
-					reject(error);
-					return;
-				}
+				await Sleep(2000).setContext(ctx);
 				callback(); // should not be called
-				resolve();
 			})
 		).rejects.toThrow(/context/gi);
 
@@ -151,11 +139,10 @@ describe("Sleep fake time tests", () => {
 
 		await expect(
 			new PinkyPromise(
-				async (resolve) => {
+				async () => {
 					callback(); // should be called
 					await Sleep(500);
 					callback(); // should be called
-					resolve();
 				},
 				{ Context: ctx }
 			)
@@ -164,11 +151,10 @@ describe("Sleep fake time tests", () => {
 
 		await expect(
 			new PinkyPromise(
-				async (resolve) => {
+				async () => {
 					callback(); // should be called
 					await Sleep(2000);
 					callback(); // should not be called
-					resolve();
 				},
 				{ Context: ctx }
 			)
@@ -190,17 +176,18 @@ describe("Sleep fake time tests", () => {
 
 		await expect(
 			new PinkyPromise(
-				(resolve, reject) => {
-					callback(); // should be called
-					Sleep(500)
-						.setContext(sleepCtx)
-						.onCancel(sleepCancelCallback)
-						.then(() => {
-							callback();
-							resolve();
-						})
-						.catch(reject);
-				},
+				() =>
+					new Promise((resolve, reject) => {
+						callback(); // should be called
+						Sleep(500)
+							.setContext(sleepCtx)
+							.onCancel(sleepCancelCallback)
+							.then(() => {
+								callback();
+								resolve();
+							})
+							.catch(reject);
+					}),
 				{ Context: parentCtx }
 			).onCancel(() => {
 				sleepCtx.cancel();
@@ -213,17 +200,18 @@ describe("Sleep fake time tests", () => {
 
 		await expect(
 			new PinkyPromise(
-				(resolve, reject) => {
-					callback(); // should be called
-					Sleep(2000)
-						.setContext(sleepCtx)
-						.onCancel(sleepCancelCallback)
-						.then(() => {
-							callback(); // should not be called
-							resolve();
-						})
-						.catch(reject);
-				},
+				() =>
+					new Promise((resolve, reject) => {
+						callback(); // should be called
+						Sleep(2000)
+							.setContext(sleepCtx)
+							.onCancel(sleepCancelCallback)
+							.then(() => {
+								callback(); // should not be called
+								resolve();
+							})
+							.catch(reject);
+					}),
 				{ Context: parentCtx }
 			).onCancel(() => {
 				sleepCtx.Cancel();
@@ -249,16 +237,10 @@ describe("Sleep fake time tests", () => {
 
 		await expect(
 			new PinkyPromise(
-				async (resolve, reject) => {
+				async () => {
 					callback(); // should be called
-					try {
-						await Sleep(500).setContext(sleepCtx).onCancel(sleepCancelCallback);
-					} catch (error) {
-						reject(error);
-						return;
-					}
+					await Sleep(500).setContext(sleepCtx).onCancel(sleepCancelCallback);
 					callback(); // should be called
-					resolve();
 				},
 				{ Context: parentCtx }
 			).onCancel(async () => {
@@ -273,16 +255,10 @@ describe("Sleep fake time tests", () => {
 
 		await expect(
 			new PinkyPromise(
-				async (resolve, reject) => {
+				async () => {
 					callback(); // should be called
-					try {
-						await Sleep(2000).setContext(sleepCtx).onCancel(sleepCancelCallback);
-					} catch (error) {
-						reject(error);
-						return;
-					}
+					await Sleep(2000).setContext(sleepCtx).onCancel(sleepCancelCallback);
 					callback(); // should not be called
-					resolve();
 				},
 				{ Context: parentCtx }
 			).onCancel(async () => {
@@ -309,16 +285,10 @@ describe("Sleep fake time tests", () => {
 		expect(callback).not.toBeCalled();
 
 		await expect(
-			new PinkyPromise(async (resolve, reject) => {
+			new PinkyPromise(async () => {
 				callback(); // should be called
-				try {
-					await Sleep(500).setContext(ctx).onCancel(sleepCancelCallback);
-				} catch (error) {
-					reject(error);
-					return;
-				}
+				await Sleep(500).setContext(ctx).onCancel(sleepCancelCallback);
 				callback(); // should be called
-				resolve();
 			}).onCancel(pinkyPromiseCancelCallback)
 		).resolves.not.toThrow();
 		expect(callback).toHaveBeenCalledTimes(2);
@@ -326,16 +296,10 @@ describe("Sleep fake time tests", () => {
 		expect(pinkyPromiseCancelCallback).not.toBeCalled();
 
 		await expect(
-			new PinkyPromise(async (resolve, reject) => {
+			new PinkyPromise(async () => {
 				callback(); // should be called
-				try {
-					await Sleep(2000).setContext(ctx).onCancel(sleepCancelCallback);
-				} catch (error) {
-					reject(error);
-					return;
-				}
+				await Sleep(2000).setContext(ctx).onCancel(sleepCancelCallback);
 				callback(); // should not be called
-				resolve();
 			}).onCancel(pinkyPromiseCancelCallback) // should not be called
 		).rejects.toThrow(/context/gi);
 
